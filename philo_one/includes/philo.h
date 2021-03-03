@@ -34,6 +34,7 @@ typedef struct			s_philo
 	int					id;
 	int					status;
 	pthread_mutex_t		mutex_lock;
+	pthread_t			philo;
 }						t_philo;
 
 typedef struct			s_input
@@ -58,6 +59,14 @@ int						show_error(char const *str);
 **	srcs/parse.c
 */
 
-int         			parse_in(t_input *input, int ac, char **av);
+int         			parse_in(t_input *input, int ac,
+char **av);
 
+/*
+**	srcs/philo.c
+*/
+
+int						main_process(t_input in, int ac,
+char **av);
+void					*philosopher(void *p);
 #endif

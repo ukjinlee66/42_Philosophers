@@ -18,6 +18,7 @@ int			show_error(char const *str)
 		 write(2, str, ft_strlen(str));
 	return (1);
 }
+
 int			ft_strlen(char const *str)
 {
 	int i;
