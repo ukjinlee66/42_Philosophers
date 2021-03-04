@@ -12,17 +12,16 @@
 
 #include "philo.h"
 
-int         parse_in(t_input *input, int ac, char **av)
+int         parse_in(t_philo *input, int ac, char **av)
 {
     int i;
 
-    (void)ac;
     i = 1;
     input->number_of_philo = ft_atoi(av[i++]);
     input->time_to_die = ft_atoi(av[i++]);
     input->time_to_eat = ft_atoi(av[i++]);
     input->time_to_sleep = ft_atoi(av[i++]);
-    if (av[i])
+    if (av[i] && i < ac)
     {
         input->end_eat = true;
         input->end_eat_amount = ft_atoi(av[i++]);

@@ -52,18 +52,13 @@ void    *philosopher(void *p)
     }
 }
 
-int     main_process(t_input in, int ac, char **av)
+int     main_process(t_philo *in, pthread_t *ph)
 {
-    t_philo     *ph;
+    t_philo     *ph2;
     int         index;
-    
-    (void)ac;
-    char abc = **av;
-    (void)abc;
+
     if (!(ph = (t_philo*)malloc(sizeof(*ph) * in.number_of_philo)))
         return (show_error("Error: philosopher malloc Error!\n"));
-    ph->number_philo = in.number_of_philo;
-    ph->ms_sleep = in.time_to_sleep;
     if (!(ph->_mutex = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t))))
         return (show_error("Error: mutex init Error!\n"));
     index = 0;

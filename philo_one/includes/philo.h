@@ -29,7 +29,6 @@
 **	Define
 */
 
-# define				PHILO_NUM	2
 
 /*
 **	VARIABLE
@@ -39,22 +38,17 @@ struct timeval			g_mytime;
 typedef struct			s_philo
 {
 	int					id;
-	int					number_philo;
-	int					ms_sleep;
 	int					status;
-	void				*_mutex;
-	pthread_t			philo;
-}						t_philo;
-
-typedef struct			s_input
-{
+	pthread_mutex_t		*mutex_left;
+	pthread_mutex_t		*mutex_right;
 	int					number_of_philo;
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
 	bool				end_eat;
 	int					end_eat_amount;
-}						t_input;
+	bool				live;
+}						t_philo;
 
 /*
 **	srcs/util.c
@@ -68,15 +62,14 @@ int						ft_atoi(const char *str);
 **	srcs/parse.c
 */
 
-int         			parse_in(t_input *input, int ac,
+int         			parse_in(t_philo *input, int ac,
 char **av);
 
 /*
 **	srcs/philo.c
 */
 
-int						main_process(t_input in, int ac,
-char **av);
+int						main_process(t_philo in, );
 void					*philosopher(void *p);
 void 					pickup(t_philo *pp);
 void 					putdown(t_philo *pp);
