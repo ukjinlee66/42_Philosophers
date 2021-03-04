@@ -17,7 +17,7 @@ int main(int ac, char **av)
     t_input in;
 	if (ac < 5 || ac > 6)
         return (show_error("Error: bad arguments!\n"));
-    if (in.number_of_philo < 2) //single philo case
+    if (ft_atoi(av[1]) < 2) //single philo case
         return (show_error("Error: signle philo!\n"));
     if (!parse_in(&in, ac, av))
         return (show_error("Error: bad input amount!\n"));

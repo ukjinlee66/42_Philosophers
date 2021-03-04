@@ -12,6 +12,29 @@
 
 #include "philo.h"
 
+void pickup(t_philo *pp)
+{
+  int phil_count;
+  //pthread_mutex_t *mu = (pthread_mutex_t*)pp->_mutex;
+
+  phil_count = pp->number_philo;
+
+  printf("mutex lock %d %d\n",pp->id, pp->id + 1);
+  //pthread_mutex_lock(&mu[pp->id]);       /* lock up left stick */
+  //pthread_mutex_lock(&mu[pp->id + 1]); /* lock up right stick */
+}
+
+void putdown(t_philo *pp)
+{
+  int phil_count;
+  //pthread_mutex_t *mu = (pthread_mutex_t*)pp->_mutex;
+
+  phil_count = pp->number_philo;
+  printf("mutex unlock %d %d\n",pp->id, pp->id + 1);
+  //pthread_mutex_unlock(&mu[pp->id]);       /* lock up left stick */
+  //pthread_mutex_unlock(&mu[pp->id + 1]); /* lock up right stick */
+}
+
 void    *philosopher(void *p)
 {
     t_philo     *ph;
@@ -19,7 +42,13 @@ void    *philosopher(void *p)
     ph = (t_philo*)p;
     while(1)
     {
-        
+        printf("philo[%d] thiking!\n", ph->id);
+        usleep(ph->ms_sleep);
+        printf("philo[%d] eating!\n", ph->id);
+        pickup(ph);
+        usleep(ph->ms_sleep);
+        putdown(ph);
+        usleep(ph->ms_sleep);
     }
 }
 
@@ -27,15 +56,26 @@ int     main_process(t_input in, int ac, char **av)
 {
     t_philo     *ph;
     int         index;
-
+    
+    (void)ac;
+    char abc = **av;
+    (void)abc;
     if (!(ph = (t_philo*)malloc(sizeof(*ph) * in.number_of_philo)))
         return (show_error("Error: philosopher malloc Error!\n"));
+    ph->number_philo = in.number_of_philo;
+    ph->ms_sleep = in.time_to_sleep;
+    if (!(ph->_mutex = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t))))
+        return (show_error("Error: mutex init Error!\n"));
+    index = 0;
+    while (index < ph->number_philo)
+        pthread_mutex_init(&ph->_mutex[index++], NULL);
     index = 0;
     while (index < in.number_of_philo)
     {
         ph[index].id = index;
-        pthread_create(ph[index].philo, NULL, philosopher,
+        pthread_create(&ph[index].philo, NULL, philosopher,
         (void*)(ph + index));
-        pthread_mutex_init(&ph[index].mutex_lock, NULL);
+        index++;
     }
+    return (1);
 }
