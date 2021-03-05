@@ -6,7 +6,7 @@
 /*   By: youlee <youlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 21:18:45 by youlee            #+#    #+#             */
-/*   Updated: 2021/03/04 21:18:48 by youlee           ###   ########.fr       */
+/*   Updated: 2021/03/05 21:51:00 by youlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int         init_thread(t_philo *in, pthread_t *ph,
         else
             in->mutex_right = &mu[index + 1];
         index++;
+		in->live = true;
     }
     return(1);
 }

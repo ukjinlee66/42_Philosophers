@@ -6,7 +6,7 @@
 /*   By: youlee <youlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 14:41:54 by youlee            #+#    #+#             */
-/*   Updated: 2021/03/02 15:36:06 by youlee           ###   ########.fr       */
+/*   Updated: 2021/03/05 21:50:21 by youlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,13 @@ int						main_process(t_philo in, );
 void					*philosopher(void *p);
 void 					pickup(t_philo *pp);
 void 					putdown(t_philo *pp);
+
+/*
+**	srcs/init.c
+*/
+
+int						init_thread(t_philo *in, pthread_t *ph,
+		pthread_mutex_t **mu2);
+int						init_mutex(t_philo *in, pthread_mutex_t **mu2);
+
 #endif
