@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: youlee <youlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/03 17:11:36 by youlee            #+#    #+#             */
-/*   Updated: 2021/03/05 22:01:59 by youlee           ###   ########.fr       */
+/*   Created: 2021/03/07 21:42:47 by youlee            #+#    #+#             */
+/*   Updated: 2021/03/07 21:42:50 by youlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,32 @@ void    *philosopher(void *p)
 {
     t_philo     *ph;
 
-    ph = (t_philo*)p;
+    printf("assign before\n");
+    ph = (t_philo *)p;
+    printf("assign after\n");
     while(1)
     {
-        printf("philo[%d] thiking!\n", ph->id);
-        usleep(ph->ms_sleep);
-        pickup(ph);
-        printf("philo[%d] eating!\n", ph->id);
-        usleep(ph->ms_sleep);
-        putdown(ph);
-        usleep(ph->ms_sleep);
+        gettimeofday(&ph->mytime, NULL);
+        printf("current time : %d\n",ph->mytime.tv_usec);
+        philo_fork(ph);
+        philo_eat(ph);
+        philo_sleep(ph);
+        philo_think(ph);
     }
+    return (NULL);
 }
 
-int     main_process(t_philo *in, pthread_t *ph)
+int     main_process(t_philo *in, pthread_t **ph2)
 {
-    t_philo     *ph2;
     int         index;
 
     index = 0;
-    while (index < in.number_of_philo)
+    while (index < in->number_of_philo)
     {
-        pthread_create(&ph[index], NULL, philosopher, (void*)(in + index));
-        index++;
+      printf("pthread create %d\n",index);
+      if (pthread_create(&(*ph2[index]), NULL, &philosopher, &in[index]))
+        return (0);
+      index++;
     }
     return (1);
 }

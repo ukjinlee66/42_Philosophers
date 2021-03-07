@@ -5,19 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: youlee <youlee@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/04 21:18:45 by youlee            #+#    #+#             */
-/*   Updated: 2021/03/05 21:51:00 by youlee           ###   ########.fr       */
+/*   Created: 2021/03/07 21:43:16 by youlee            #+#    #+#             */
+/*   Updated: 2021/03/07 21:43:18 by youlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int         init_thread(t_philo *in, pthread_t *ph,
+int         init_thread(t_philo *in, pthread_t **ph2,
         pthread_mutex_t **mu2)
 {
     int                 index;
     pthread_mutex_t     *mu;
+    pthread_t           *ph;
 
+    ph = *ph2;
     mu = *mu2;
     if (!(ph = (pthread_t*)malloc(sizeof(pthread_t) *
     in->number_of_philo)))
@@ -34,6 +36,8 @@ int         init_thread(t_philo *in, pthread_t *ph,
         index++;
 		in->live = true;
     }
+    *mu2 = mu;
+    *ph2 = ph;
     return(1);
 }
 int         init_mutex(t_philo *in, pthread_mutex_t **mu2)
@@ -43,10 +47,11 @@ int         init_mutex(t_philo *in, pthread_mutex_t **mu2)
 
     mu = *mu2;
     if (!(mu = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) *
-    in->number_of_philo)))
+    in[0].number_of_philo)))
         return (show_error("Error: Mutex malloc error!\n"));
     index = 0;
-    while (index < in->number_of_philo)
+    while (index < in[0].number_of_philo)
         pthread_mutex_init(&mu[index++], NULL);
+    *mu2 = mu;
     return (1);
 }

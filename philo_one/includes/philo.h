@@ -34,7 +34,6 @@
 **	VARIABLE
 */
 
-struct timeval			g_mytime;
 typedef struct			s_philo
 {
 	int					id;
@@ -48,6 +47,7 @@ typedef struct			s_philo
 	bool				end_eat;
 	int					end_eat_amount;
 	bool				live;
+	struct timeval		mytime;
 }						t_philo;
 
 /*
@@ -62,15 +62,32 @@ int						ft_atoi(const char *str);
 **	srcs/parse.c
 */
 
-int         			parse_in(t_philo *input, int ac,
+int         			parse_in(t_philo **input2, int ac,
 char **av);
 
 /*
 **	srcs/philo.c
 */
 
-int						main_process(t_philo in, );
+int						main_process(t_philo *in, pthread_t **ph2);
 void					*philosopher(void *p);
 void 					pickup(t_philo *pp);
 void 					putdown(t_philo *pp);
+
+/*
+**	srcs/philo_action.c
+*/
+
+void        			philo_fork(t_philo *ph);
+void        			philo_eat(t_philo *ph);
+void        			philo_sleep(t_philo *ph);
+void        			philo_think(t_philo *ph);
+
+/*
+**	srcs/init.c
+*/
+
+int         			init_thread(t_philo *in, pthread_t **ph2,
+        pthread_mutex_t **mu2);
+int         			init_mutex(t_philo *in, pthread_mutex_t **mu2);
 #endif

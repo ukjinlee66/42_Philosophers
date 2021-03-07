@@ -1,16 +1,21 @@
-NAME = Array_program
+NAME = Philo_one
 
-CC = clang++
+CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.cpp
+SRCS =	srcs/main.c \
+		srcs/init.c \
+		srcs/parse.c \
+		srcs/philo.c \
+		srcs/util.c \
+		srcs/philo_action.c
 
-INCLUDES = -I .
+INCLUDES = -I ./includes/
 
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:.c=.o)
 
-%.o : %.cpp
+%.o : %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME): $(OBJS)
