@@ -29,19 +29,25 @@ void putdown(t_philo *pp)
 void    *philosopher(void *p)
 {
     t_philo     *ph;
+    pthread_t   mon;
+    int         cnt;
 
-    printf("assign before\n");
+    cnt = 0;
     ph = (t_philo *)p;
-    printf("assign after\n");
-    while(1)
+    printf("current time : %lld\n", get_time());
+    if (ph->id % 2 != 0)
+        usleep(ph->time_to_eat);
+    while(ph->live)
     {
-        gettimeofday(&ph->mytime, NULL);
-        printf("current time : %d\n",ph->mytime.tv_usec);
+        pthread_create(&mon, NULL, &monitor, (void*)ph);
+        pthread_detach(mon);
         philo_fork(ph);
         philo_eat(ph);
         philo_sleep(ph);
         philo_think(ph);
+        cnt++;
     }
+
     return (NULL);
 }
 
@@ -53,9 +59,9 @@ int     main_process(t_philo *in, pthread_t **ph2)
     while (index < in->number_of_philo)
     {
       printf("pthread create %d\n",index);
-      if (pthread_create(&(*ph2[index]), NULL, &philosopher, &in[index]))
-        return (0);
+      pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
       index++;
     }
+    index = 0;
     return (1);
 }

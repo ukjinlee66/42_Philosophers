@@ -26,15 +26,12 @@ int main(int ac, char **av)
         return (show_error("Error: signle philo!\n"));
     if (!parse_in(&in, ac, av))
         return (show_error("Error: bad input amount!\n"));
-        printf("boom\n");
     if (!init_mutex(in, &_mutex))
         return (show_error("Error: Not init mutex!\n"));
-        printf("boom\n");
     if (!init_thread(in, &th, &_mutex))
         return (show_error("Error: Not init thread!\n"));
-        printf("boom\n");
     if (!main_process(in, &th))
         return (show_error("Error: main process!\n"));
-    //clear_program(&in, th);
+    clear_program(&in, &_mutex, &th);
     return (0);
 }

@@ -62,3 +62,11 @@ int				ft_atoi(const char *str)
 	}
 	return (ans * sign);
 }
+
+long long		get_time(void)
+{
+	struct timeval		mytime;
+
+	gettimeofday(&mytime, NULL);
+	return (mytime.tv_sec * 1000L + mytime.tv_usec / 1000L);
+}
