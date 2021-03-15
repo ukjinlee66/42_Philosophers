@@ -68,8 +68,8 @@ void        clear_program(t_philo **in, pthread_mutex_t **mu2,
 
     index = 0;
     end = (*in)[index].number_of_philo;
-    while (index < end)
-        pthread_join((*ph2)[index++], NULL);
+    // while (index < end)
+    //     pthread_join((*ph2)[index++], NULL);
     index = 0;
     while (index < end)
         pthread_mutex_destroy(&(*mu2)[index++]);

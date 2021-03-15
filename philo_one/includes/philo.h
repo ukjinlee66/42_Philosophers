@@ -29,7 +29,7 @@
 **	Define
 */
 
-struct timeval		mytime;
+bool					g_stop;
 
 /*
 **	VARIABLE
@@ -76,8 +76,6 @@ char **av);
 
 int						main_process(t_philo *in, pthread_t **ph2);
 void					*philosopher(void *p);
-void 					pickup(t_philo *pp);
-void 					putdown(t_philo *pp);
 
 /*
 **	srcs/philo_action.c

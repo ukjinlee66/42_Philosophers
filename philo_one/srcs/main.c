@@ -20,6 +20,7 @@ int main(int ac, char **av)
 
     th = NULL;
     _mutex = NULL;
+    g_stop = false;
 	if (ac < 5 || ac > 6)
         return (show_error("Error: bad arguments!\n"));
     if (ft_atoi(av[1]) < 2)

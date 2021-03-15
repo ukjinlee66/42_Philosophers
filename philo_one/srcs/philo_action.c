@@ -52,14 +52,16 @@ void        philo_think(t_philo *ph)
 void        *monitor(void *p)
 {
     t_philo     *ph;
+    int         index;
     
+    index = 0;
     ph = (t_philo*)p;
     if (ph->live && get_time() - ph->last_eat_time >= ph->time_to_die)
     {
         pthread_mutex_lock(ph->mutex_monitor);
         ph->live = false;
-        
-        pthread_mutex_unlock(ph->mutex_monitor);
+        printf("%lld_in_ms %d died\n",get_time() - ph->time, ph->id);
+        g_stop = true;
     }
     return (NULL);
 }

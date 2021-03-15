@@ -12,20 +12,6 @@
 
 #include "philo.h"
 
-void pickup(t_philo *pp)
-{
-  printf("mutex lock %d %d\n",pp->id, pp->id + 1);
-  pthread_mutex_lock(pp->mutex_left);       /* lock up left stick */
-  pthread_mutex_lock(pp->mutex_right); /* lock up right stick */
-}
-
-void putdown(t_philo *pp)
-{
-  printf("mutex unlock %d %d\n",pp->id, pp->id + 1);
-  pthread_mutex_unlock(pp->mutex_left);       /* lock up left stick */
-  pthread_mutex_unlock(pp->mutex_right); /* lock up right stick */
-}
-
 void    *philosopher(void *p)
 {
     t_philo     *ph;
@@ -34,10 +20,9 @@ void    *philosopher(void *p)
 
     cnt = 0;
     ph = (t_philo *)p;
-    printf("current time : %lld\n ph id : %d\n", get_time(),ph->id);
     if (ph->id % 2 != 0)
         usleep(ph->time_to_eat);
-    while(ph->live || (ph->end_eat && cnt < ph->end_eat_amount))
+    while((!g_stop && ph->live) || (ph->end_eat && cnt < ph->end_eat_amount))
     {
         pthread_create(&mon, NULL, &monitor, (void*)ph);
         pthread_detach(mon);
@@ -55,13 +40,21 @@ void    *philosopher(void *p)
 int     main_process(t_philo *in, pthread_t **ph2)
 {
     int         index;
+    int       index2;
 
     index = 0;
-    while (index < in->number_of_philo)
+    index2 = 0;
+    while (!g_stop && index < in->number_of_philo)
     {
-      printf("pthread create %d\n",index);
       pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
       usleep(10);
+      if (g_stop)
+      {
+        index2 = 0;
+        while (index2 < in->number_of_philo)
+          pthread_detach((*ph2)[index2++]);
+        return (1);
+      }
       index++;
     }
     index = 0;
