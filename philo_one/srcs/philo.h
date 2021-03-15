@@ -48,6 +48,7 @@ typedef struct			s_philo
 	int					time_to_sleep;
 	bool				end_eat;
 	int					end_eat_amount;
+	int					eat_amount;
 	bool				live;
 	long long			last_eat_time;
 	long long			time;
@@ -97,4 +98,5 @@ int         			init_thread(t_philo *in, pthread_t **ph2,
 int         			init_mutex(t_philo *in, pthread_mutex_t **mu2);
 void        			clear_program(t_philo **in, pthread_mutex_t **mu2,
         pthread_t **ph2);
+int         			init_monitor(t_philo *in, int n);
 #endif

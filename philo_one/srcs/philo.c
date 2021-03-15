@@ -34,10 +34,10 @@ void    *philosopher(void *p)
 
     cnt = 0;
     ph = (t_philo *)p;
-    printf("current time : %lld\n", get_time());
+    printf("current time : %lld\n ph id : %d\n", get_time(),ph->id);
     if (ph->id % 2 != 0)
         usleep(ph->time_to_eat);
-    while(ph->live)
+    while(ph->live || (ph->end_eat && cnt < ph->end_eat_amount))
     {
         pthread_create(&mon, NULL, &monitor, (void*)ph);
         pthread_detach(mon);
@@ -47,7 +47,8 @@ void    *philosopher(void *p)
         philo_think(ph);
         cnt++;
     }
-
+    ph->live = false;
+    pthread_detach(mon);
     return (NULL);
 }
 
@@ -60,6 +61,7 @@ int     main_process(t_philo *in, pthread_t **ph2)
     {
       printf("pthread create %d\n",index);
       pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
+      usleep(10);
       index++;
     }
     index = 0;

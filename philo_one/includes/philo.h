@@ -48,6 +48,7 @@ typedef struct			s_philo
 	int					time_to_sleep;
 	bool				end_eat;
 	int					end_eat_amount;
+	int					eat_amount;
 	bool				live;
 	long long			last_eat_time;
 	long long			time;

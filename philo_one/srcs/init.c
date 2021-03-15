@@ -20,21 +20,20 @@ int         init_thread(t_philo *in, pthread_t **ph2,
 
     ph = *ph2;
     if (!(ph = (pthread_t*)malloc(sizeof(pthread_t) *
-    in->number_of_philo)))
+    in[0].number_of_philo)))
         return (show_error("Error: Thread malloc error!\n"));
     index = 0;
-    while (index < in->number_of_philo)
+    while (index < in[index].number_of_philo)
     {
-        in->id = index;
-        in->mutex_left = &(*mu2)[index];
-        in->time = get_time();
-        if (index + 1 == in->number_of_philo)
-            in->mutex_right = &(*mu2)[0];
+        in[index].id = index;
+        in[index].mutex_left = &(*mu2)[index];
+        in[index].time = get_time();
+        if (index + 1 == in[index].number_of_philo)
+            in[index].mutex_right = &(*mu2)[0];
         else
-            in->mutex_right = &(*mu2)[index + 1];
-		in->live = true;
-        in->last_eat_time = 0;
-        printf("in -> id : %d\n",in->id);
+            in[index].mutex_right = &(*mu2)[index + 1];
+		in[index].live = true;
+        in[index].last_eat_time = 0;
         index++;
     }
     *ph2 = ph;
@@ -68,23 +67,17 @@ void        clear_program(t_philo **in, pthread_mutex_t **mu2,
     int     end;
 
     index = 0;
-    while (index < (*in)->number_of_philo)
+    end = (*in)[index].number_of_philo;
+    while (index < end)
         pthread_join((*ph2)[index++], NULL);
     index = 0;
-    while (index < (*in)->number_of_philo)
+    while (index < end)
         pthread_mutex_destroy(&(*mu2)[index++]);
-    index = 0;
-    while (index < (*in)->number_of_philo)
-    {
-        free(&(*mu2)[index]);
-        free(&(*ph2)[index]);
-        index++;
-    }
+    void** dummy = (void**)mu2;
+    (void)dummy;
     free((*mu2));
     free((*ph2));
     index = 0;
-    end = (*in)->number_of_philo;
-    while (index < end)
-        free(&(*in)[index++]);
+    pthread_mutex_destroy((*in)->mutex_monitor);
     free((*in));
 }

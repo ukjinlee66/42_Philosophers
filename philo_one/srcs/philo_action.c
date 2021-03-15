@@ -16,13 +16,17 @@ void        philo_fork(t_philo *ph)
 {
     pthread_mutex_lock(ph->mutex_left);
     pthread_mutex_lock(ph->mutex_right);
+    pthread_mutex_lock(ph->mutex_monitor);
     printf("%lld_in_ms %d has taken a fork\n",get_time() - ph->time, ph->id);
+    pthread_mutex_unlock(ph->mutex_monitor);
 }
 
 void        philo_eat(t_philo *ph)
 {
+    pthread_mutex_lock(ph->mutex_monitor);
     ph->last_eat_time = get_time();
     printf("%lld_in_ms %d is eating\n", get_time() - ph->time, ph->id);
+    pthread_mutex_unlock(ph->mutex_monitor);
     usleep(ph->time_to_eat);
     if (ph->end_eat)
         ph->end_eat_amount++;
@@ -32,13 +36,17 @@ void        philo_eat(t_philo *ph)
 
 void        philo_sleep(t_philo *ph)
 {
+    pthread_mutex_lock(ph->mutex_monitor);
     printf("%lld_in_ms %d is sleeping\n", get_time() - ph->time, ph->id);
+    pthread_mutex_unlock(ph->mutex_monitor);
     usleep(ph->time_to_sleep);
 }
 
 void        philo_think(t_philo *ph)
 {
+    pthread_mutex_lock(ph->mutex_monitor);
     printf("%lld_in_ms %d is thinking\n",get_time() - ph->time, ph->id);
+    pthread_mutex_unlock(ph->mutex_monitor);
 }
 
 void        *monitor(void *p)
@@ -50,6 +58,7 @@ void        *monitor(void *p)
     {
         pthread_mutex_lock(ph->mutex_monitor);
         ph->live = false;
+        
         pthread_mutex_unlock(ph->mutex_monitor);
     }
     return (NULL);

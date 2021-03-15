@@ -30,6 +30,7 @@ int main(int ac, char **av)
         return (show_error("Error: Not init mutex!\n"));
     if (!init_thread(in, &th, &_mutex))
         return (show_error("Error: Not init thread!\n"));
+    //init_monitor(in, in->number_of_philo);
     if (!main_process(in, &th))
         return (show_error("Error: main process!\n"));
     clear_program(&in, &_mutex, &th);
