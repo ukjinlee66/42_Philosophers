@@ -65,8 +65,11 @@ int				ft_atoi(const char *str)
 
 long long		get_time(void)
 {
+	static long long init_time;
 	struct timeval		mytime;
 
 	gettimeofday(&mytime, NULL);
-	return (mytime.tv_sec * 1000L + mytime.tv_usec / 1000L);
+	if (!init_time)
+		init_time = mytime.tv_sec * 1000L + mytime.tv_usec / 1000L;
+	return ((mytime.tv_sec * 1000L + mytime.tv_usec / 1000L) - init_time);
 }

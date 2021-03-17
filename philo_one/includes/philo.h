@@ -30,6 +30,7 @@
 */
 
 bool					g_stop;
+int						g_meals;
 
 /*
 **	VARIABLE
@@ -49,6 +50,7 @@ typedef struct			s_philo
 	bool				end_eat;
 	int					end_eat_amount;
 	int					eat_amount;
+	int					meals;
 	bool				live;
 	long long			last_eat_time;
 	long long			time;
@@ -76,7 +78,9 @@ char **av);
 
 int						main_process(t_philo *in, pthread_t **ph2);
 void					*philosopher(void *p);
-
+void    				check_die(t_philo *in, pthread_t **ph2);
+void    				check_meals(t_philo *in, pthread_t **ph2);
+void    				delete_philo(int end, pthread_t **ph2);
 /*
 **	srcs/philo_action.c
 */

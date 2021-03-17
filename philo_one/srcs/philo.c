@@ -22,10 +22,10 @@ void    *philosopher(void *p)
     ph = (t_philo *)p;
     if (ph->id % 2 != 0)
         usleep(ph->time_to_eat);
-    while((!g_stop && ph->live) || (ph->end_eat && cnt < ph->end_eat_amount))
+    while(ph->live && (!ph->end_eat || cnt < ph->end_eat_amount))
     {
-        pthread_create(&mon, NULL, &monitor, (void*)ph);
         pthread_detach(mon);
+        pthread_create(&mon, NULL, &monitor, (void*)ph);
         philo_fork(ph);
         philo_eat(ph);
         philo_sleep(ph);
@@ -34,29 +34,62 @@ void    *philosopher(void *p)
     }
     ph->live = false;
     pthread_detach(mon);
+    if (ph->end_eat && cnt == ph->end_eat_amount)
+      g_meals++;
     return (NULL);
+}
+
+void    delete_philo(int end, pthread_t **ph2)
+{
+  int i;
+
+  i = 0;
+  while (i < end)
+    pthread_detach((*ph2)[i++]);
+}
+
+void    check_meals(t_philo *in, pthread_t **ph2)
+{
+  int idx;
+  int end;
+  idx = 0;
+  end = in[idx].number_of_philo;
+  while (!g_stop && (g_meals) < end)
+    usleep(1);
+  if (g_stop || g_meals == end)
+    delete_philo(end, ph2);
+  if (!g_stop && g_meals == end)
+  {
+    pthread_mutex_lock(in->mutex_monitor);
+    printf("philo all ate!\n");
+  }
+}
+
+void    check_die(t_philo *in, pthread_t **ph2)
+{
+  int end;
+
+  end = in[0].number_of_philo;
+  while (!g_stop)
+    usleep(1);
+  if (g_stop)
+    delete_philo(end, ph2);
 }
 
 int     main_process(t_philo *in, pthread_t **ph2)
 {
     int         index;
-    int       index2;
 
     index = 0;
-    index2 = 0;
-    while (!g_stop && index < in->number_of_philo)
+    while (index < in->number_of_philo)
     {
       pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
       usleep(10);
-      if (g_stop)
-      {
-        index2 = 0;
-        while (index2 < in->number_of_philo)
-          pthread_detach((*ph2)[index2++]);
-        return (1);
-      }
       index++;
     }
-    index = 0;
+    if (in->end_eat)
+      check_meals(in, ph2);
+    else
+      check_die(in, ph2);
     return (1);
 }
