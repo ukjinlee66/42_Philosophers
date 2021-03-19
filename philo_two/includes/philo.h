@@ -24,6 +24,7 @@
 # include <sys/time.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <semaphore.h>
 
 /*
 **	Define
@@ -40,9 +41,6 @@ typedef struct			s_philo
 {
 	int					id;
 	int					status;
-	pthread_mutex_t		*mutex_left;
-	pthread_mutex_t		*mutex_right;
-	pthread_mutex_t		*mutex_monitor;
 	int					number_of_philo;
 	int					time_to_die;
 	int					time_to_eat;
@@ -64,6 +62,12 @@ int						ft_strlen(char const *str);
 int						show_error(char const *str);
 int						ft_atoi(const char *str);
 long long				get_time(void);
+
+/*
+**	srcs/util2.c
+*/
+
+void					sleep_time(long long delay);
 
 /*
 **	srcs/parse.c
@@ -97,7 +101,9 @@ void        			*monitor(void *p);
 
 int         			init_thread(t_philo *in, pthread_t **ph2,
         pthread_mutex_t **mu2);
-int         			init_mutex(t_philo *in, pthread_mutex_t **mu2);
-void        			clear_program(t_philo **in, pthread_mutex_t **mu2,
+int         			init_sem(t_philo *in, sem_t **sem);
+void        			clear_program(t_philo **in, sem_t **sem,
         pthread_t **ph2);
+
+
 #endif
