@@ -22,10 +22,10 @@ void    *philosopher(void *p)
     ph = (t_philo *)p;
     if (ph->id % 2 != 0)
         usleep(ph->time_to_eat);
+    pthread_create(&mon, NULL, &monitor, (void*)ph);
+    pthread_detach(mon);
     while(ph->live && (!ph->end_eat || cnt < ph->end_eat_amount))
-    {
-        pthread_detach(mon);
-        pthread_create(&mon, NULL, &monitor, (void*)ph);
+    {    
         philo_fork(ph);
         philo_eat(ph);
         philo_sleep(ph);
@@ -33,7 +33,6 @@ void    *philosopher(void *p)
         cnt++;
     }
     ph->live = false;
-    pthread_detach(mon);
     if (ph->end_eat && cnt == ph->end_eat_amount)
       g_meals++;
     return (NULL);
@@ -84,7 +83,7 @@ int     main_process(t_philo *in, pthread_t **ph2)
     while (index < in->number_of_philo)
     {
       pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
-      usleep(10);
+      //usleep(10);
       index++;
     }
     if (in->end_eat)

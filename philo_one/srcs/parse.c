@@ -29,6 +29,10 @@ int         parse_in(t_philo **input2, int ac, char **av)
         input[j].time_to_die = ft_atoi(av[i++]);
         input[j].time_to_eat = ft_atoi(av[i++]);
         input[j].time_to_sleep = ft_atoi(av[i++]);
+        input[j].live = true;
+        input[j].last_eat_time = get_time();
+        input[j].meals = 0;
+        input[j].time = get_time();
         if (av[i] && i < ac)
         {
             input[j].end_eat = true;

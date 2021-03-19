@@ -27,14 +27,11 @@ int         init_thread(t_philo *in, pthread_t **ph2,
     {
         in[index].id = index;
         in[index].mutex_left = &(*mu2)[index];
-        in[index].time = get_time();
         if (index + 1 == in[index].number_of_philo)
             in[index].mutex_right = &(*mu2)[0];
         else
             in[index].mutex_right = &(*mu2)[index + 1];
-		in[index].live = true;
-        in[index].last_eat_time = get_time();
-        in[index].meals = 0;
+		
         index++;
     }
     *ph2 = ph;
