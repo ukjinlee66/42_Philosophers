@@ -41,6 +41,8 @@ typedef struct			s_philo
 {
 	int					id;
 	int					status;
+	sem_t				*fork;
+	sem_t				*mon;
 	int					number_of_philo;
 	int					time_to_die;
 	int					time_to_eat;
@@ -99,11 +101,8 @@ void        			*monitor(void *p);
 **	srcs/init.c
 */
 
-int         			init_thread(t_philo *in, pthread_t **ph2,
-        pthread_mutex_t **mu2);
-int         			init_sem(t_philo *in, sem_t **sem);
-void        			clear_program(t_philo **in, sem_t **sem,
-        pthread_t **ph2);
+int         			init_thread(t_philo *in, pthread_t **ph2);
+void        			clear_program(t_philo **in, pthread_t **ph2);
 
 
 #endif

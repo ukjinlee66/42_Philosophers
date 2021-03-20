@@ -1,4 +1,4 @@
-NAME = Philo_one
+NAME = Philo_two
 
 CC = gcc
 
