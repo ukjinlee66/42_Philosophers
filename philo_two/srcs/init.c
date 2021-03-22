@@ -41,17 +41,6 @@ int         init_thread(t_philo *in, pthread_t **ph2)
 
 void        clear_program(t_philo **in, pthread_t **ph2)
 {
-    int idx;
-    int end;
-
-    idx = 0;
-    end = in[0]->number_of_philo;
-    while (idx < end)
-    {
-        sem_close((*in)[idx].fork);
-        sem_close((*in)[idx].mon);
-        idx++;
-    }
     free((*ph2));
     free((*in));
 }

@@ -14,20 +14,19 @@
 
 void        philo_fork(t_philo *ph)
 {
-    printf("fork before %d\n",ph->id);
     sem_wait(ph->fork);
     sem_wait(ph->fork);
-    //sem_wait(ph->mon);
+    sem_wait(ph->mon);
     printf("%lld_in_ms %d has taken a fork\n",get_time() - ph->time, ph->id);
-    //sem_post(ph->mon);
+    sem_post(ph->mon);
 }
 
 void        philo_eat(t_philo *ph)
 {
-    //sem_wait(ph->mon);
+    sem_wait(ph->mon);
     ph->last_eat_time = get_time();
     printf("%lld_in_ms %d is eating\n", get_time() - ph->time, ph->id);
-    //sem_post(ph->mon);
+    sem_post(ph->mon);
     sleep_time(ph->time_to_eat);
     sem_post(ph->fork);
     sem_post(ph->fork);
@@ -35,17 +34,17 @@ void        philo_eat(t_philo *ph)
 
 void        philo_sleep(t_philo *ph)
 {
-    //sem_wait(ph->mon);
+    sem_wait(ph->mon);
     printf("%lld_in_ms %d is sleeping\n", get_time() - ph->time, ph->id);
-    //sem_post(ph->mon);
+    sem_post(ph->mon);
     sleep_time(ph->time_to_sleep);
 }
 
 void        philo_think(t_philo *ph)
 {
-    //sem_wait(ph->mon);
+    sem_wait(ph->mon);
     printf("%lld_in_ms %d is thinking\n", get_time() - ph->time, ph->id);
-    //sem_post(ph->mon);
+    sem_post(ph->mon);
 }
 
 void        *monitor(void *p)
@@ -55,13 +54,14 @@ void        *monitor(void *p)
     ph = (t_philo*)p;
     while (!g_stop && ph->live)
     {
-        if (get_time() - ph->last_eat_time > ph->time_to_die)
+        if (ph->live && get_time() - ph->last_eat_time > ph->time_to_die)
         {
-            //sem_wait(ph->mon);
+            sem_wait(ph->mon);
             printf("%lld_in_ms %d died\n",get_time() - ph->time, ph->id);
             g_stop = true;
             ph->live = false;
         }
     }
+    ph->live = false;
     return (NULL);
 }

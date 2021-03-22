@@ -20,20 +20,16 @@ void    *philosopher(void *p)
 
     cnt = 0;
     ph = (t_philo *)p;
-    // if (ph->id % 2 != 0)
-    //     sleep_time(ph->time_to_eat);
     pthread_create(&mon, NULL, &monitor, (void*)ph);
     pthread_detach(mon);
-    while(!g_stop && ph->live && (!ph->end_eat || cnt < ph->end_eat_amount))
-    {    
+    while(ph->live && (!ph->end_eat || cnt < ph->end_eat_amount))
+    {   
         philo_fork(ph);
         philo_eat(ph);
         philo_sleep(ph);
         philo_think(ph);
         cnt++;
-        printf("boom %d\n",ph->id);
     }
-    printf("die loop ph id : %d\n",ph->id);
     ph->live = false;
     if (ph->end_eat && cnt == ph->end_eat_amount)
       g_meals++;
@@ -72,7 +68,7 @@ void    check_die(t_philo *in, pthread_t **ph2)
 
   end = in[0].number_of_philo;
   while (!g_stop)
-    sleep_time(1);
+    sleep_time(10);
   if (g_stop)
     delete_philo(end, ph2);
 }
