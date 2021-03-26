@@ -12,14 +12,13 @@
 
 #include "philo.h"
 
-void    *philosopher(void *p)
+void    *philosopher(t_philo *ph, t_data *data)
 {
-    t_philo     *ph;
     pthread_t   mon;
     int         cnt;
 
     cnt = 0;
-    ph = (t_philo *)p;
+    ph->data = data;
     pthread_create(&mon, NULL, &monitor, (void*)ph);
     pthread_detach(mon);
     while(ph->live && (!ph->end_eat || cnt < ph->end_eat_amount))
@@ -30,12 +29,14 @@ void    *philosopher(void *p)
         philo_think(ph);
         cnt++;
     }
-    if (ph->live)
+    if (!ph->live)
       exit(1);
     if (ph->end_eat && cnt == ph->end_eat_amount)
-      g_meals++;
+    {
+      ph->data->meals++;
+      printf("data -> melas : %d\n",ph->data->meals);
+    }
     exit(1);
-    return (NULL);
 }
 
 void    delete_philo(int end, t_philo **in)
@@ -53,11 +54,11 @@ void    check_meals(t_philo *in)
   int end;
   idx = 0;
   end = in[idx].number_of_philo;
-  while (!g_stop && (g_meals) < end)
+  while (!in->data->stop && (in->data->meals) < end)
     sleep_time(1);
-  if (g_stop || g_meals == end)
+  if (in->data->stop || in->data->meals == end)
     delete_philo(end, &in);
-  if (!g_stop && g_meals == end)
+  if (!in->data->stop && in->data->meals == end)
   {
     sem_wait(in->mon);
     printf("philo all ate!\n");
@@ -69,13 +70,13 @@ void    check_die(t_philo *in)
   int end;
 
   end = in[0].number_of_philo;
-  while (!g_stop)
+  while (!in->data->stop)
     sleep_time(10);
-  if (g_stop)
+  if (in->data->stop)
     delete_philo(end, &in);
 }
 
-int     main_process(t_philo *in, pthread_t **ph2)
+int     main_process(t_philo *in, t_data *data)
 {
     int         index;
 
@@ -84,7 +85,7 @@ int     main_process(t_philo *in, pthread_t **ph2)
     {
       in[index].pid = fork();
       if (in[index].pid == 0)
-        pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
+        philosopher(&in[index], data);
       index++;
     }
     if (in->end_eat)

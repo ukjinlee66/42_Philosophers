@@ -28,15 +28,14 @@
 # include <signal.h>
 
 /*
-**	Define
-*/
-
-bool					g_stop;
-int						g_meals;
-
-/*
 **	VARIABLE
 */
+
+typedef struct			s_data
+{
+	bool				stop;
+	int					meals;
+}						t_data;
 
 typedef struct			s_philo
 {
@@ -56,6 +55,7 @@ typedef struct			s_philo
 	bool				live;
 	long long			last_eat_time;
 	long long			time;
+	struct s_data		*data;
 }						t_philo;
 
 /*
@@ -84,8 +84,8 @@ char **av);
 **	srcs/philo.c
 */
 
-int						main_process(t_philo *in, pthread_t **ph2);
-void					*philosopher(void *p);
+int						main_process(t_philo *in, t_data *data);
+void					*philosopher(t_philo *ph, t_data *data);
 void    				check_die(t_philo *in);
 void    				check_meals(t_philo *in);
 void    				delete_philo(int end, t_philo **in);
@@ -103,8 +103,8 @@ void        			*monitor(void *p);
 **	srcs/init.c
 */
 
-int         			init_thread(t_philo *in, pthread_t **ph2);
-void        			clear_program(t_philo **in, pthread_t **ph2);
-
+int         			init_thread(t_philo *in);
+void        			clear_program(t_philo **in);
+void        			init_data(t_data *data);
 
 #endif

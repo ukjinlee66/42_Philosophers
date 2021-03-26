@@ -12,10 +12,9 @@
 
 #include "../includes/philo.h"
 
-int         init_thread(t_philo *in, pthread_t **ph2)
+int         init_thread(t_philo *in)
 {
     int                 index;
-    pthread_t           *ph;
     sem_t               *fork2;
     sem_t               *mon2;
 
@@ -23,10 +22,6 @@ int         init_thread(t_philo *in, pthread_t **ph2)
     sem_unlink("monitor");
     fork2 = sem_open("fork", O_CREAT | O_EXCL, 0644, in[0].number_of_philo);
     mon2 = sem_open("monitor", O_CREAT | O_EXCL, 0644, 1);
-    ph = *ph2;
-    if (!(ph = (pthread_t*)malloc(sizeof(pthread_t) *
-    in[0].number_of_philo)))
-        return (show_error("Error: Thread malloc error!\n"));
     index = 0;
     while (index < in[index].number_of_philo)
     {
@@ -35,12 +30,17 @@ int         init_thread(t_philo *in, pthread_t **ph2)
         in[index].mon = mon2;
         index++;
     }
-    *ph2 = ph;
     return(1);
 }
 
-void        clear_program(t_philo **in, pthread_t **ph2)
+void        init_data(t_data *data)
 {
-    free((*ph2));
+    data->stop = false;
+    data->meals = 0;
+}
+
+void        clear_program(t_philo **in, t_data **data)
+{
+    free((*data));
     free((*in));
 }

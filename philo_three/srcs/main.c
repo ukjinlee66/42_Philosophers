@@ -15,19 +15,21 @@
 int main(int ac, char **av)
 {
     t_philo             *in;
-    pthread_t           *th;
+    t_data              *data;
 
-    th = NULL;
+    if (!(data = (t_data*)malloc(sizeof(t_data))))
+        return (show_error("Error: data struct malloc error!\n"));
+    init_data(data);
 	if (ac < 5 || ac > 6)
         return (show_error("Error: bad arguments!\n"));
     if (ft_atoi(av[1]) < 2)
         return (show_error("Error: signle philo!\n"));
     if (!parse_in(&in, ac, av))
         return (show_error("Error: bad input amount!\n"));
-    if (!init_thread(in, &th))
+    if (!init_thread(in))
         return (show_error("Error: Not init thread!\n"));
-    if (!main_process(in, &th))
+    if (!main_process(in, data))
         return (show_error("Error: main process!\n"));
-    clear_program(&in, &th);
+    clear_program(&in);
     return (0);
 }
