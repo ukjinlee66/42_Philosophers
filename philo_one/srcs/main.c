@@ -12,28 +12,28 @@
 
 #include "philo.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    t_philo             *in;
-    pthread_t           *th;
-    pthread_mutex_t     *_mutex;
+	t_philo				*in;
+	pthread_t			*th;
+	pthread_mutex_t		*mutexx;
 
-    th = NULL;
-    _mutex = NULL;
-    g_stop = false;
-    g_meals = 0;
+	th = NULL;
+	mutexx = NULL;
+	g_stop = false;
+	g_meals = 0;
 	if (ac < 5 || ac > 6)
-        return (show_error("Error: bad arguments!\n"));
-    if (ft_atoi(av[1]) < 2)
-        return (show_error("Error: signle philo!\n"));
-    if (!parse_in(&in, ac, av))
-        return (show_error("Error: bad input amount!\n"));
-    if (!init_mutex(in, &_mutex))
-        return (show_error("Error: Not init mutex!\n"));
-    if (!init_thread(in, &th, &_mutex))
-        return (show_error("Error: Not init thread!\n"));
-    if (!main_process(in, &th))
-        return (show_error("Error: main process!\n"));
-    clear_program(&in, &_mutex, &th);
-    return (0);
+		return (show_error("Error: bad arguments!\n"));
+	if (ft_atoi(av[1]) < 2)
+		return (show_error("Error: signle philo!\n"));
+	if (!parse_in(&in, ac, av))
+		return (show_error("Error: bad input amount!\n"));
+	if (!init_mutex(in, &mutexx))
+		return (show_error("Error: Not init mutex!\n"));
+	if (!init_thread(in, &th, &mutexx))
+		return (show_error("Error: Not init thread!\n"));
+	if (!main_process(in, &th))
+		return (show_error("Error: main process!\n"));
+	clear_program(&in, &mutexx, &th);
+	return (0);
 }

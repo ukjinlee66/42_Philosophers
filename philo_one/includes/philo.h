@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
 /*
 **	INCLUDES FILES
@@ -75,8 +75,8 @@ void					sleep_time(long long delay);
 **	srcs/parse.c
 */
 
-int         			parse_in(t_philo **input2, int ac,
-char **av);
+int						parse_in(t_philo **input2, int ac,
+		char **av);
 
 /*
 **	srcs/philo.c
@@ -84,28 +84,26 @@ char **av);
 
 int						main_process(t_philo *in, pthread_t **ph2);
 void					*philosopher(void *p);
-void    				check_die(t_philo *in, pthread_t **ph2);
-void    				check_meals(t_philo *in, pthread_t **ph2);
-void    				delete_philo(int end, pthread_t **ph2);
+void					check_die(t_philo *in, pthread_t **ph2);
+void					check_meals(t_philo *in, pthread_t **ph2);
+void					delete_philo(int end, pthread_t **ph2);
 /*
 **	srcs/philo_action.c
 */
 
-void        			philo_fork(t_philo *ph);
-void        			philo_eat(t_philo *ph);
-void        			philo_sleep(t_philo *ph);
-void        			philo_think(t_philo *ph);
-void        			*monitor(void *p);
+void					philo_fork(t_philo *ph);
+void					philo_eat(t_philo *ph);
+void					philo_sleep(t_philo *ph);
+void					philo_think(t_philo *ph);
+void					*monitor(void *p);
 
 /*
 **	srcs/init.c
 */
 
-int         			init_thread(t_philo *in, pthread_t **ph2,
-        pthread_mutex_t **mu2);
-int         			init_mutex(t_philo *in, pthread_mutex_t **mu2);
-void        			clear_program(t_philo **in, pthread_mutex_t **mu2,
-        pthread_t **ph2);
-
-
+int						init_thread(t_philo *in, pthread_t **ph2,
+		pthread_mutex_t **mu2);
+int						init_mutex(t_philo *in, pthread_mutex_t **mu2);
+void					clear_program(t_philo **in, pthread_mutex_t **mu2,
+		pthread_t **ph2);
 #endif

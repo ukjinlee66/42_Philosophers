@@ -12,16 +12,16 @@
 
 #include "philo.h"
 
-int			show_error(char const *str)
+int				show_error(char const *str)
 {
 	if (str)
-		 write(2, str, ft_strlen(str));
+		write(2, str, ft_strlen(str));
 	return (1);
 }
 
-int			ft_strlen(char const *str)
+int				ft_strlen(char const *str)
 {
-	int i;
+	int					i;
 
 	i = 0;
 	while (str[i])
