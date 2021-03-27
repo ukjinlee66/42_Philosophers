@@ -72,7 +72,8 @@ long long				get_time(void);
 */
 
 void					sleep_time(long long delay);
-
+void					check_die_meals(t_philo *in);
+int						wait_status(t_philo *in, int *end, int i);
 /*
 **	srcs/parse.c
 */
@@ -85,7 +86,7 @@ char **av);
 */
 
 int						main_process(t_philo *in, t_data *data);
-void					*philosopher(t_philo *ph, t_data *data);
+void					*philosopher(t_philo *ph);
 void    				check_die(t_philo *in);
 void    				check_meals(t_philo *in);
 void    				delete_philo(int end, t_philo **in);

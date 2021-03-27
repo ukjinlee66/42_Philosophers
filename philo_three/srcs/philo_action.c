@@ -53,16 +53,16 @@ void        *monitor(void *p)
     t_philo     *ph;
     
     ph = (t_philo*)p;
-    while (!ph->data->stop && ph->live)
+    while (ph->live)
     {
-        if (ph->live && get_time() - ph->last_eat_time > ph->time_to_die)
+        if (get_time() - ph->last_eat_time > ph->time_to_die)
         {
             sem_wait(ph->mon);
             printf("%lld_in_ms %d died\n",get_time() - ph->time, ph->id);
             ph->data->stop = true;
             ph->live = false;
-            exit(1);
+            exit(4);
         }
     }
-    exit(1);
+    return (NULL);
 }

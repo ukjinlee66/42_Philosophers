@@ -30,6 +30,8 @@ int main(int ac, char **av)
         return (show_error("Error: Not init thread!\n"));
     if (!main_process(in, data))
         return (show_error("Error: main process!\n"));
-    clear_program(&in);
+    check_die_meals(in);
+    free(data);
+    free(in);
     return (0);
 }
