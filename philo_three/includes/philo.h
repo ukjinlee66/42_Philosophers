@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
 /*
 **	INCLUDES FILES
@@ -78,8 +78,8 @@ int						wait_status(t_philo *in, int *end, int i);
 **	srcs/parse.c
 */
 
-int         			parse_in(t_philo **input2, int ac,
-char **av);
+int						parse_in(t_philo **input2, int ac,
+		char **av);
 
 /*
 **	srcs/philo.c
@@ -87,25 +87,25 @@ char **av);
 
 int						main_process(t_philo *in, t_data *data);
 void					*philosopher(t_philo *ph);
-void    				check_die(t_philo *in);
-void    				check_meals(t_philo *in);
-void    				delete_philo(int end, t_philo **in);
+void					check_die(t_philo *in);
+void					check_meals(t_philo *in);
+void					delete_philo(int end, t_philo **in);
+
 /*
 **	srcs/philo_action.c
 */
 
-void        			philo_fork(t_philo *ph);
-void        			philo_eat(t_philo *ph);
-void        			philo_sleep(t_philo *ph);
-void        			philo_think(t_philo *ph);
-void        			*monitor(void *p);
+void					philo_fork(t_philo *ph);
+void					philo_eat(t_philo *ph);
+void					philo_sleep(t_philo *ph);
+void					philo_think(t_philo *ph);
+void					*monitor(void *p);
 
 /*
 **	srcs/init.c
 */
 
-int         			init_thread(t_philo *in);
-void        			clear_program(t_philo **in, t_data **data);
-void        			init_data(t_data *data);
-
+int						init_thread(t_philo *in);
+void					clear_program(t_philo **in, t_data **data);
+void					init_data(t_data *data);
 #endif
