@@ -12,11 +12,11 @@
 
 #include "philo.h"
 
-void    sleep_time(long long delay)
+void	sleep_time(long long delay)
 {
-    long long purpose;
+	long long purpose;
 
-    purpose = get_time() + delay;
-    while (purpose > get_time())
-        usleep(10);
+	purpose = get_time() + delay;
+	while (purpose > get_time())
+		usleep(10);
 }
