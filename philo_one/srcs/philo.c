@@ -83,7 +83,8 @@ int			main_process(t_philo *in, pthread_t **ph2)
 	index = 0;
 	while (index < in->number_of_philo)
 	{
-		pthread_create(&((*ph2)[index]), NULL, philosopher, (void*)&(in[index]));
+		pthread_create(&((*ph2)[index]), NULL, philosopher,
+				(void*)&(in[index]));
 		index++;
 	}
 	if (in->end_eat)
